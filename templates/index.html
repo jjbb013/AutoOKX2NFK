@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AutoOKX2NFK 控制台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f6f8fa; }
+        .github-card { background: #fff; border: 1px solid #d0d7de; border-radius: 8px; box-shadow: 0 1px 2px rgba(27,31,35,.04); margin-bottom: 2rem; }
+        .github-header { background: #24292f; color: #fff; padding: 1rem; border-radius: 8px 8px 0 0; font-size: 1.25rem; }
+        .btn-github { background: #24292f; color: #fff; }
+        .btn-github:hover { background: #444c56; }
+        pre { background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 6px; padding: 1rem; }
+    </style>
+</head>
+<body>
+<div class="container py-4">
+    <div class="github-card">
+        <div class="github-header">AutoOKX2NFK 控制台</div>
+        <div class="p-4">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="alert alert-info">{{ messages[0] }}</div>
+              {% endif %}
+            {% endwith %}
+            <div class="mb-3">
+                <a href="/run/account" class="btn btn-github me-2">手动查询账户</a>
+                <a href="/run/order" class="btn btn-github me-2">测试下单</a>
+                <a href="/run/notify" class="btn btn-github">测试通知</a>
+            </div>
+            <h5>账户查询结果</h5>
+            <pre>{{ results['account'] }}</pre>
+            <h5>测试下单结果</h5>
+            <pre>{{ results['order'] }}</pre>
+            <h5>通知服务结果</h5>
+            <pre>{{ results['notify'] }}</pre>
+        </div>
+    </div>
+    <footer class="text-center text-muted">GitHub 风格 · 手机适配 · Powered by Flask</footer>
+</div>
+</body>
+</html> 

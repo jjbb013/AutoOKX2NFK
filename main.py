@@ -1,9 +1,11 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import subprocess
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'autookx2nfk')
+
+PASSWORD = '333333'
 
 # 运行结果缓存
 results = {
@@ -21,12 +23,33 @@ def run_script(script_name):
     except Exception as e:
         return str(e)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        password = request.form.get('password')
+        if password == PASSWORD:
+            session['logged_in'] = True
+            return redirect(url_for('index'))
+        else:
+            flash('密码错误，请重试')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('已退出登录')
+    return redirect(url_for('login'))
+
 @app.route('/')
 def index():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     return render_template('index.html', results=results)
 
 @app.route('/run/<task>')
 def run_task(task):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     if task == 'account':
         results['account'] = run_script('okx_account_balance.py')
         flash('账户查询已执行')
